@@ -1,0 +1,205 @@
+<script>
+	$(document).ready(function() {
+		validaCookie();
+		$('#cliente').css('border-bottom', '5px solid #c30b0b');;
+		$('#banc').css('display', 'none');
+		$('#conc').css('display', 'none');
+		listaBancos();
+		tipoConta();
+		barbottom();
+		getPessoa();
+		$('#prazo_conc, #valor_conc').on('keyup', function() {
+			juroMontante();
+		});
+
+		$('#save_cli').click(function() {
+			setPessoa();
+		});
+
+		$('#save_bco').click(function() {
+			setBanco();
+		});
+
+		$('#save_conc').click(function() {
+			setConcessao();
+		});
+
+		$('#cep').change(function() {
+			teste();    
+		});
+
+		$('.date').val(dataAtualFormatada)
+
+		$('.date').mask('00/00/0000');
+		$('.cpf').mask('000.000.000-00', {reverse: true});
+		$('.phone').mask('(00) 00000-0000');
+		$('.cep').mask('00000-000');
+		$('.money').mask("#.##0,00", {reverse: true});
+		$('.conta').mask("##.#####0-0", {reverse: true});
+		$('.percent').mask('##0,00%', {reverse: true});
+
+	});	
+</script>
+
+<div class="container">
+	<table class="table">
+		<tr>	
+			<td id="cliente" class="barbottom">Clientes</td>
+			<td id="bancario" class="barbottom">Bancos</td>
+			<td id="concessao" class="barbottom">Concessões</td>
+		</tr>
+	</table>
+	<div id="cli" class="aba1 jumbotron py-3">	
+		<h3>Cadastro de Clientes</h3>
+		<div id="form_cli">
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="nome_pes">Nome</label>
+					<input type="text" class="form-control" name="nome_pes" id="nome_pes">
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="fone_pes">Telefone</label>
+					<input type="text" class="form-control phone" name="fone_pes" id="fone_pes">
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="cpf_pes">CPF</label>
+					<input type="text" class="form-control cpf" name="cpf_pes" id="cpf_pes" maxlength="11">
+				</div>
+				<div class="form-group col-sm-2 col-6">
+					<label for="cep">CEP</label>
+					<input type="text" class="form-control cep" name="cep" id="cep" autocomplete="off">
+				</div>
+				<div class="form-group col-sm-2 col-6">
+					<label for="numero">Nº</label>
+					<input type="text" class="form-control" name="numero" id="numero">
+				</div>
+				<div class="form-group col-sm-4">
+					<label for="logradouro">Logradouro</label>
+					<input type="text" class="form-control" name="logradouro" id="logradouro" readonly>
+				</div>
+				<div class="form-group col-sm-4">
+					<label for="bairro">Bairro</label>
+					<input type="text" class="form-control" name="bairro" id="bairro" readonly>
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="municipio">Municipio</label>
+					<input type="text" class="form-control" name="municipio" id="municipio" readonly>
+					<input type="hidden" name="ibge" id="ibge">
+				</div>
+				<div class="form-group col-sm-2">
+					<label for="uf">UF</label>
+					<input type="text" class="form-control" name="uf" id="uf" readonly>
+				</div>
+				<div class="row col-sm-4 align-items-end">
+					<div class="form-group col-12">
+						<button class="btn btn-success btn-sm float-right" id="save_cli">Salvar</button>
+						<button class="btn btn-danger btn-sm mr-1 float-right" id="cancel1">Cancelar</button>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="banc" class="aba2 jumbotron py-3">
+		<h3>Dados Bancários</h3>
+		<div id="cad_banc">
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="id_pes">Cliente</label>
+					<select class="form-control" id="id_pes">
+						<option value="">Selecione o cliente</option>
+					</select>
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="id_idb">Banco</label>
+					<select class="form-control" id="id_idb">
+						<option value="">Selecione um Banco</option>
+					</select>
+				</div>
+				<div class="form-group col-sm-2 col-6">
+					<label for="agencia_bco">Agência</label>
+					<input type="text" class="form-control" autocomplete="off" name="agencia_bco" id="agencia_bco">
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="conta_bco">Conta</label>
+					<input type="text" class="form-control conta" autocomplete="off" name="conta_bco" id="conta_bco">
+				</div>
+				<div class="form-group col-sm-3">
+					<label for="tipo_conta">Tipo Conta</label>
+					<select class="form-control" id="tipo_conta">
+						<option value="">Tipo de Conta</option>
+					</select>
+				</div>
+				<div class="row col-sm-4 align-items-end">
+					<div class="form-group col-12">
+						<button class="btn btn-success btn-sm float-right" id="save_bco">Salvar</button>
+						<button class="btn btn-danger btn-sm mr-1 float-right" id="cancel2">Cancelar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="conc" class="aba3 jumbotron py-3">
+		<h3>Registro de Concessões</h3>
+		<div id="cad_conc">
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="id_pes2">Cliente</label>
+					<select class="form-control" id="id_pes2">
+						<option value="">Selecione o cliente</option>
+					</select>
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="valor_conc">Valor</label>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">R$</span>
+						</div>
+						<input type="text" class="form-control money" autocomplete="off" name="valor_conc" id="valor_conc">
+					</div>
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="aquisicao_conc">Data</label>
+					<input type="text" class="form-control date" autocomplete="off" name="aquisicao_conc" id="aquisicao_conc" readonly>
+				</div>
+				<div class="form-group col-sm-2 col-4">
+					<label for="prazo_conc">Prazo(mês)</label>
+					<input type="text" class="form-control" autocomplete="off" name="prazo_conc" id="prazo_conc">
+				</div>
+				<div class="form-group col-sm-2 col-4">
+					<label for="vencimento_conc">Vencimento</label>
+					<input type="text" class="form-control" autocomplete="off" name="vencimento_conc" id="vencimento_conc">
+				</div>
+				<div class="form-group col-sm-2 col-4">
+					<label for="taxa_conc">Taxa</label>
+					<input type="text" class="form-control percent" autocomplete="off" name="taxa_conc" id="taxa_conc" value="2000" readonly>
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="juro_total_conc">Juro Total</label>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">R$</span>
+						</div>
+						<input type="text" class="form-control money" autocomplete="off" name="juro_total_conc" id="juro_total_conc" readonly>
+					</div>
+				</div>
+				<div class="form-group col-sm-3 col-6">
+					<label for="montante_estimado_conc">Montante</label>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text">R$</span>
+						</div>
+						<input type="text" class="form-control money" autocomplete="off" name="montante_estimado_conc" id="montante_estimado_conc" readonly>
+					</div>
+				</div>
+				<div class="row col-sm-12 align-items-end">
+					<div class="form-group col-12">
+						<button class="btn btn-success btn-sm float-right" id="save_conc">Salvar</button>
+						<button class="btn btn-danger btn-sm mr-1 float-right" id="cancel3">Cancelar</button>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="js/mask.js"></script>

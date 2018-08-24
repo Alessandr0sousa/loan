@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 lang="pt-br">
+	<meta name=description content="emprestimos, concessão, cessão">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<title>LoanManagement</title>
+	<link rel="shortcut icon" type="image/jpg" href="img/favicon.jpg"/>
+	<link rel="icon" type="image/jpg" href="img/favicon.jpg"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/estilo.css">
+	<link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+	
+	<script src="js/jquery.js"></script></script>
+	<script src="js/rotas.js"></script>
+	<script src="js/cookie.js"></script>
+	<script src="js/buscacep.js"></script>
+	<script src="js/services.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			validaCookie();
+		});
+	</script>
+	<style type="text/css">
+	.nav-link{padding: 0 10% !important;}
+</style>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-secondary p-0">
+			<a class="navbar-brand pl-4">LoanManagement</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item mx-1">
+						<a class="nav-link" href="pages/cadastros.html">Cadastros</a>
+					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link" href="pages/clientes.html">Clientes</a>
+					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link" href="pages/concessoes.html">Concessões</a>
+					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link" href="pages/controle.html">Controle</a>
+					</li>
+				<!-- 	<li class="nav-item">
+						<a class="nav-link" href="#">Pricing</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Disabled</a>
+					</li> -->
+				</ul>
+				<span class="navbar-text mx-2">
+					<div>Olá, <span id="pessoa"></span>!</div>
+				</span>
+			</div>
+
+		</nav>
+	</header>
+	<section id="content">
+	</section>
+	<footer class="fixed-bottom rodape">
+		<p class="t_ftr">Desenvolvido por: Alessandro sousa</p>
+		<p class="t_ftr">&copy; Copyright 2018 - All Rights Reserved</p>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+html, body {font-family: 'Exo', sans-serif;}
+
+.t_ftr{ font-size:.8em; margin: 0;}
+
+.rodape{text-align: center;}
+
+.barbottom{border-bottom: 5px solid #ccc; width: 1%; text-align: center; padding: 1%; cursor: pointer;}
+
+.barbottom:hover {background-color: #afb2b5;}
+
+.navbar-brand{color: #fff !important;}
