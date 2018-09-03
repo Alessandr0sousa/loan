@@ -7,7 +7,7 @@ function barbottom(){
 		$('#bancario').css('border-bottom', '5px solid #ccc');
 		$('#concessao').css('border-bottom', '5px solid #ccc');
 		$('#banc').css('display', 'none');
-		$('#conc').css('display', 'none');
+		$('#conc').css('display', 'none'); 
 		$('#cli').fadeIn();
 		// $('#cli').css('display', 'block');
 	}); 
@@ -147,7 +147,7 @@ function setPessoa() {
 			timer: 3000
 		});
 		toast({
-			type: 'success',
+			type: 'error',
 			title: 'Falha ao inserir o registro!!'
 		});
 	})
@@ -271,7 +271,7 @@ function setConcessao() {
 			timer: 3000
 		});
 		toast({
-			type: 'success',
+			type: 'error',
 			title: 'Registro não inserido!!'
 		})
 	});
@@ -366,7 +366,14 @@ function validaCookie(){
 			data: {tipo: 'validacookie', cookie: cookie},
 		})
 		.done(function(res) {
+			logout = res['logout_time'];
 			$('#pessoa').text(res['nome_usuario']);
+			setInterval(function(){
+				swal('Sua sessão foi encerrada', 'Faça login novamanete!', 'info');
+				$.removeCookie("token"); 
+				var index = "";
+				window.location.href = index;
+			},60*60*1000);
 		})
 		.fail(function(res) {
 			// alert('Efetue login!');
@@ -381,4 +388,54 @@ function validaCookie(){
 		var index = "index.html";
 		window.location.href = index;
 	}
+}
+
+function ecerraSessao(argument) {
+	var horaatual = $.now();
+}
+
+function collapse(){
+	$(".collapse.in").each(function(){
+		$(this).siblings(".panel-heading").find(".fa").addClass("fa fa-minus").removeClass("fa fa-plus");
+	});
+
+	$(".collapse").on('show.bs.collapse', function(){
+		$(this).parent().find(".fa").removeClass("fa fa-plus").addClass("fa fa-minus");
+	}).on('hide.bs.collapse', function(){
+		$(this).parent().find(".fa").removeClass("fa fa-minus").addClass("fa fa-plus");
+	});
+}
+
+function upControl() {
+	$('#upcontrol').on('show.bs.modal', function (event) {
+		var button 		= $(event.relatedTarget) 
+		var id 			= button.data('id') 
+		var valor 		= button.data('valor') 
+		var vencimento	= button.data('vencimento') 
+		var modal 		= $(this)
+		modal.find('#id').val(id)
+		modal.find('#valor').val(valor)
+		modal.find('#vencimento').text(vencimento)
+	})
+}
+
+
+function checked() {
+	$('#Y').click(function() {
+		$('#sts').val('Y')
+		$(this).children().addClass('text-success');
+		$('#N').children().removeClass('text-danger');
+	});
+	$('#N').click(function() {
+		$('#sts').val('N')
+		$(this).children().addClass('text-danger');
+		$('#Y').children().removeClass('text-success');
+	});
+
+}
+
+function dataAtual() {
+	var d = new Date();
+	var data_pag = d.getDate()+'/'+d.getDate()+'/'+d.getFullYear();
+	$('#datapag').text(data_pag);
 }

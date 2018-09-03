@@ -1,10 +1,10 @@
 function teste() {
-    var cep = $('#cep').val();
+    var cep = $('#cep').cleanVal();
     $.ajax({
-        url: 'https://viacep.com.br/ws/'+cep+'/json/',
+        url: 'php/buscacep.php',
         type: 'POST',
         dataType: 'json',
-        data: {logradouro: 'logradouro', bairro: 'bairro', municipio: 'localidade', uf: 'uf', ibge: 'ibge'},
+        data: {logradouro: 'logradouro', bairro: 'bairro', municipio: 'localidade', uf: 'uf', ibge: 'ibge', cep: cep},
     })
     .done(function(res) {
         $('#logradouro').val(res.logradouro);

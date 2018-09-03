@@ -35,7 +35,7 @@ if (!empty($_POST)) {
 			$insertId->execute(array(
 				'id_ses' => $token,
 				'last_activity' => time(),
-				'logout_time' => time() + (5 * 60),
+				'logout_time' => time() + (60 * 60),
 				'login' => $login
 			));
 			

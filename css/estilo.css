@@ -1,6 +1,6 @@
 html, body {font-family: 'Exo', sans-serif;}
 
-.t_ftr{ font-size:.8em; margin: 0;}
+.t_ftr{ font-size:.6rem; margin: 0;}
 
 .rodape{text-align: center;}
 
@@ -9,3 +9,7 @@ html, body {font-family: 'Exo', sans-serif;}
 .barbottom:hover {background-color: #afb2b5;}
 
 .navbar-brand{color: #fff !important;}
+
+.text-success, .text-warning, .text-danger{font-weight: bold; text-align: center !important;}
+
+button.ok {background-color: #dee2e657 !important;}

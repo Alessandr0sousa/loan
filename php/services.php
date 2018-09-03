@@ -61,7 +61,7 @@ function validaCookie(){
 	$res = $sql_get->rowCount();
 
 	if ($res > 0) {
-		$buscausu = $pdo->prepare("SELECT pes.nome_pes as nome_usuario FROM session ses, pessoa pes where pes.id_pes = ses.login and ses.id_ses = :id_ses");
+		$buscausu = $pdo->prepare("SELECT pes.nome_pes as nome_usuario, ses.* FROM session ses, pessoa pes where pes.id_pes = ses.login and ses.id_ses = :id_ses");
 		$buscausu->execute(array('id_ses' => $cookie));
 
 		$retorno = $buscausu->fetch(PDO::FETCH_ASSOC);
@@ -71,10 +71,30 @@ function validaCookie(){
 
 }
 
+function converteData($data_prev) {
+
+	$data = $data_prev;
+	$dd   = date('d-m-Y');
+
+	$d_prev	= explode("/", $data);
+	$d_a	= explode("-", $dd);
+
+	$d1 = strtotime("$d_prev[2]-$d_prev[1]-$d_prev[0]");
+	$d2 = strtotime("$d_a[2]-$d_a[1]-$d_a[0]");
+
+	$dif = ceil(($d2-$d1)/86400);
+
+	if ($dif <= 0) {
+		return "No prazo";
+	}else {
+		return $dif.' dias atrasado';
+	}	
+}
+
 function getControle() {
 	require 'connect.php';	
 
-	$datapagamento = date('d-m-Y');
+	// $datapagamento = date('d-m-Y');
 
 	$sql_get2 = $pdo->prepare("SELECT id_conc, nome_pes FROM bolao251_loan.concessao, bolao251_loan.pessoa where pessoa = id_pes");
 	$sql_get2->execute();
@@ -83,13 +103,14 @@ function getControle() {
 
 	$op = '';
 	for ($i=0; $i < sizeof($res2); $i++) { 
+
 		$op .='
-		
+
 		<div class="accordion accordion-sm" id="accordionExample">
 		<div class="card">
 		<div class="card-header py-1" id="headingOne">
 		<h5 class="mb-0">
-		<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse'.$res2[$i]['id_conc'].'" aria-expanded="true" aria-controls="collapseOne">
+		<button class="btn btn-link btc" type="button" data-toggle="collapse" data-target="#collapse'.$res2[$i]['id_conc'].'" aria-expanded="true" aria-controls="collapseOne">
 		<i class="fa fa-plus"></i>&nbsp;'.$res2[$i]['nome_pes'].'
 		</button>
 		</h5>
@@ -99,49 +120,59 @@ function getControle() {
 		<div class="row">';
 
 		$op.='
-		<div class="col-sm-6">
+		<div class="col-sm-8 table-responsive">
 		<table class="table table-hover table-sm">
 		<thead class="thead-light">
 		<th scope="col">Valor</th>
 		<th scope="col">Prev_pag</th>
-		<th scope="col">Pag_efet</th>
 		<th scope="col">Status</th>
+		<th scope="col">Edit</th>
 		</thead>
 		<tbody>	
 		';
 
 		$idconc = $res2[$i]['id_conc'];
 
-		$sql_get = $pdo->prepare("SELECT * FROM bolao251_loan.controle where concessao = :idconc and status_ct = 'N'");
+		$sql_get = $pdo->prepare("SELECT * FROM bolao251_loan.controle where concessao = :idconc");
 		$sql_get->execute( array('idconc' => $idconc));
 
 		$res = $sql_get->fetchAll(PDO::FETCH_ASSOC);
 
+		$soma = 0;
+
 		for($j = 0;$j < sizeof($res);$j++) {
 			$data_prev = $res[$j]['data_prev_ct'];
 
-			$op .= '<tr><td>'.$res[$j]['valor_ct'].'</td>';	
-			$op .= '<td>'.$data_prev.'</td>';
-			$op .= '<td></td>';
-			$op .= '<td class="custom-control custom-checkbox">
-			<input type="checkbox" class="custom-control-input" id="customCheck1">
-			<label class="custom-control-label" for="customCheck1"></label>
-			</td></tr>';
+			$diferenca = converteData($data_prev);
 
+			$sts = $res[$j]['status_ct'];
+
+			$retval = ($sts == 'Y') ? 'Pago' : $diferenca ;
+
+			if ($sts == 'Y') {
+				$soma = floatval($soma) + $res[$j]['valor_ct'];
+			}
+
+			$op .= '<tr><td>R$ '.$res[$j]['valor_ct'].'</td>';	
+			$op .= '<td>'.$data_prev.'</td>';
+			if ($retval == 'Pago') {
+				$op .= '<td class="sts"><span class="text-success">'.$retval.'</span></td>';
+			}elseif ($retval == 'No prazo') {
+				$op .= '<td class="sts"><span class="text-warning">'.$retval.'</span></td>';
+			}else{
+				$op .= '<td class="sts"><span class="text-danger">'.$retval.'</span></td>';
+			}
+			$op .= '<td class="sts"><button class="btn btn-warning btn-sm" id="up" data-toggle="modal" data-target="#upcontrol" data-id="'.$res[$j]['id_ct'].'" data-valor="'.$res[$j]['valor_ct'].'" data-vencimento="'.$res[$j]['data_prev_ct'].'" data-status="'.$res[$j]['status_ct'].'"><i class="far fa-edit"></i></button></td>';
 		}
 		$op .='
 		</tbody>
 		</table>
 		</div>
-		<div class="col-sm-6 row align-items-center my-auto">
-		<div class="col-6 form-group">
-		<label for="">Data Pagamento</label>
-		<input type="text" class="form-control date" id="datapagamento" value="'.$datapagamento.'">
+		<div class="col-sm-4  py-5">
+			<h5 class="mt-3 mx-5">Total quitado</h5>
+			<h5 class="mx-5 total">R$ '.$soma.',00<h5>
 		</div>
-		<div class="col-sm-6 form-group">
-		<button type="button" id="updata" class="btn btn-success">Salvar</button>
-		</div>
-
+		<div class="update">
 		</div>
 		</div>
 		</div>

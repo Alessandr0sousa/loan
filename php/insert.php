@@ -91,14 +91,14 @@ function setConcessao() {
 
 		$sql_set = $pdo->prepare("INSERT INTO bolao251_loan.concessao  VALUES (NULL, :valor_conc, :aquisicao_conc, :prazo_conc, :taxa_conc, :juro_total_estimado_conc, :montante_estimado_conc, :vencimento_conc, :pessoa)");
 		$sql_set->execute(array(
-				'valor_conc'					=> $valor_conc,
-			    'aquisicao_conc'				=> $aquisicao_conc,
-			    'prazo_conc'					=> $prazo_conc,
-			    'taxa_conc'						=> $taxa_conc,
-			    'juro_total_estimado_conc'		=> $juro_total_estimado_conc,
-			    'montante_estimado_conc'		=> $montante_estimado_conc,
-			    'vencimento_conc'				=> $vencimento_conc,
-			    'pessoa'						=> $pessoa
+			'valor_conc'					=> $valor_conc,
+			'aquisicao_conc'				=> $aquisicao_conc,
+			'prazo_conc'					=> $prazo_conc,
+			'taxa_conc'						=> $taxa_conc,
+			'juro_total_estimado_conc'		=> $juro_total_estimado_conc,
+			'montante_estimado_conc'		=> $montante_estimado_conc,
+			'vencimento_conc'				=> $vencimento_conc,
+			'pessoa'						=> $pessoa
 		));
 		setControle();
 		$res = "Registro inserido com sucesso!";
@@ -115,28 +115,46 @@ function setControle(){
 	require 'connect.php';
 	
 	$sql_get = $pdo->prepare("SELECT * FROM bolao251_loan.controle_ins;");
-	$sql_get->execute();
+	$sql_get->execute();	
 
 	$res = $sql_get->fetch(PDO::FETCH_ASSOC);
 
-		$id 		= $res['id_conc']; 
-		$prazo  	= $res['prazo_conc'];
-		$parcela  	= $res['parcela'];
-		$dia 		= $res['dia'];
-		$mes 		= $res['mes'];
-		$ano 		= $res['ano'];
-		$data 		= $dia.'-'.$mes.'-'.$ano;
-		$data       = date('d-m-Y', strtotime($data));
-		$x = 1;
+	$id 		= $res['id_conc']; 
+	$prazo  	= $res['prazo_conc'];
+	$parcela  	= $res['parcela'];
+	$dia 		= $res['dia'];
+	$mes 		= $res['mes'];
+	$ano 		= $res['ano'];
+	$data 		= $dia.'-'.$mes.'-'.$ano;
+	$data       = date('d-m-Y', strtotime($data));
+	$valor 		= $res['valor_conc'];
+	$x = 1;
 	for ($i=0; $i < $prazo; $i++) { 
-		$data_ct = date('d/m/Y', strtotime("+".$x." month", strtotime($data)));
-		$sql_set = $pdo->prepare("INSERT INTO bolao251_loan.controle (data_ct, valor_ct, concessao) VALUES (:data_ct, :valor_ct, :concessao)");
-		$sql_set->execute(array(
-				'data_ct'		=> $data_ct,
-			    'valor_ct'		=> $parcela,
-			    'concessao'		=> $id
-		));
-		$x++;
+		if ($i ==($prazo-1) ) {
+			$data_ct = date('d/m/Y', strtotime("+".$x." month", strtotime($data)));
+			$sql_set = $pdo->prepare("INSERT INTO bolao251_loan.controle (data_prev_ct, valor_ct, concessao) VALUES (:data_prev_ct, :valor_ct, :concessao)");
+			$sql_set->execute(array(
+				'data_prev_ct'		=> $data_ct,
+				'valor_ct'		=> $parcela,
+				'concessao'		=> $id
+			));
+			$data_ct = date('d/m/Y', strtotime("+".$x." month", strtotime($data)));
+			$sql_set = $pdo->prepare("INSERT INTO bolao251_loan.controle (data_prev_ct, valor_ct, concessao) VALUES (:data_prev_ct, :valor_ct, :concessao)");
+			$sql_set->execute(array(
+				'data_prev_ct'		=> $data_ct,
+				'valor_ct'		=> $valor,
+				'concessao'		=> $id
+			));
+		}else{	
+			$data_ct = date('d/m/Y', strtotime("+".$x." month", strtotime($data)));
+			$sql_set = $pdo->prepare("INSERT INTO bolao251_loan.controle (data_prev_ct, valor_ct, concessao) VALUES (:data_prev_ct, :valor_ct, :concessao)");
+			$sql_set->execute(array(
+				'data_prev_ct'		=> $data_ct,
+				'valor_ct'		=> $parcela,
+				'concessao'		=> $id
+			));
+			$x++;
+		}
 	}
 }
 
