@@ -16,9 +16,9 @@ function callPage(pageRefInput) {
 		url: pageRefInput,
 		type: "POST",
 		dataType: "html",
-		success: function(response) {
+		success: function(res) {
 				// console.log('Pagina Carregada');
-				$('#content').html(response);
+				$('#content').html(res);
 			},
 			error: function(error) {
 				// console.log('Pagina não Carregada', error);

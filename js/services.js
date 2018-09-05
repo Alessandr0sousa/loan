@@ -1,3 +1,7 @@
+$(document).ready(function() {
+	logout();
+});
+
 var services = 'php/services.php';
 var insert = 'php/insert.php';
 
@@ -412,13 +416,62 @@ function upControl() {
 		var id 			= button.data('id') 
 		var valor 		= button.data('valor') 
 		var vencimento	= button.data('vencimento') 
+		var datapag		= button.data('datapag') 
 		var modal 		= $(this)
 		modal.find('#id').val(id)
 		modal.find('#valor').val(valor)
 		modal.find('#vencimento').text(vencimento)
+		modal.find('#datapag').text(datapag)
 	})
 }
 
+function upControl_() {
+	var id = $('#id').val();
+	var sts = $('#sts').val();
+	var valor = $('#valor').val();
+	var datapag = $('#datapag').text();
+
+	$.ajax({
+		url: 'php/up.php',
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			tipo: 'upcontrol_',
+			id: id,
+			valor: valor,
+			sts: sts,
+			datapag: datapag
+		},
+	})
+	.done(function(res) {
+		alert(res);
+		// const toast = swal.mixin({
+		// 	toast: true,
+		// 	position: 'top-end',
+		// 	showConfirmButton: false,
+		// 	timer: 3000
+		// });
+
+		// toast({
+		// 	type: 'success',
+		// 	title: res
+		// })
+	})
+	.fail(function(res) {
+		alert(res);
+	// 	const toast = swal.mixin({
+	// 		toast: true,
+	// 		position: 'top-end',
+	// 		showConfirmButton: false,
+	// 		timer: 3000
+	// 	});
+
+	// 	toast({
+	// 		type: 'danger',
+	// 		title: res
+	// 	})	
+	 })
+}
 
 function checked() {
 	$('#Y').click(function() {
@@ -431,11 +484,37 @@ function checked() {
 		$(this).children().addClass('text-danger');
 		$('#Y').children().removeClass('text-success');
 	});
-
 }
 
-function dataAtual() {
-	var d = new Date();
-	var data_pag = d.getDate()+'/'+d.getDate()+'/'+d.getFullYear();
-	$('#datapag').text(data_pag);
+function logout(){
+
+	$('#logout').click(function() {
+		swal({
+			title: 'Voce deseja realmente sair?',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ok!',
+			cancelButtonText: 'Não',
+		}).then((result) => {
+			if (result.value) {
+				$.removeCookie("token");
+				var index = "index.html";
+				window.location.href = index;
+			}
+		})
+	});
 }
+
+Number.prototype.formatMoney = function(places, symbol, thousand, decimal) {
+	places = !isNaN(places = Math.abs(places)) ? places : 2;
+	symbol = symbol !== undefined ? symbol : "$";
+	thousand = thousand || ",";
+	decimal = decimal || ".";
+	var number = this, 
+	negative = number < 0 ? "-" : "",
+	i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+	j = (j = i.length) > 3 ? j % 3 : 0;
+	return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+};

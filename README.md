@@ -1,2 +1,2 @@
 # loan
-Aplicação voltada par gerenciamento de emprestimo a juros.
+Aplicação voltada par gerenciamento de emprestimos a juros.

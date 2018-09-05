@@ -13,3 +13,15 @@ html, body {font-family: 'Exo', sans-serif;}
 .text-success, .text-warning, .text-danger{font-weight: bold; text-align: center !important;}
 
 button.ok {background-color: #dee2e657 !important;}
+
+.card-body{padding: 1%;}
+
+.text-muted{font-size: .6rem !important;}
+
+.card-text{text-align: justify-all;}
+
+.nav-link{padding: 0 10% !important;}
+
+.swal2-popup{width: auto !important; font-size: .8rem !important;}
+
+.dropdown-menu{margin: .45rem;}

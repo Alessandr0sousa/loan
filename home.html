@@ -9,7 +9,7 @@
 	<link rel="icon" type="image/jpg" href="img/favicon.jpg"/>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/estilo.css">
-	<link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 	
 	<script src="js/jquery.js"></script></script>
@@ -17,11 +17,10 @@
 	<script src="js/cookie.js"></script>
 	<script src="js/buscacep.js"></script>
 	<script src="js/services.js"></script>
+	<script src="js/last_activit.js"></script>
+	<!-- <script src="js/up.js"></script> -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.9/dist/sweetalert2.all.min.js"></script>
-	<style type="text/css">
-	.nav-link{padding: 0 10% !important;}
-</style>
 </head>
 <body>
 	<header>
@@ -52,7 +51,16 @@
 					</li> -->
 				</ul>
 				<span class="navbar-text mx-2">
-					<div>Olá, <span id="pessoa"></span>!</div>
+					<div class="dropdown">
+						<a class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userdrop">
+							<span class="hidden-xs" id="pessoa"></span>
+							<div class="dropdown-menu text-center px-2" aria-labelledby="userdrop">
+								<a class="btn btn-secondary btn-sm float-left" id="perfil" href="pages/perfil.html">Perfil</a>
+								<a class="btn btn-danger btn-sm float-right" id="logout">Sair</a>
+							</div>
+						</a>
+						
+					</div>
 				</span>
 			</div>
 

@@ -94,7 +94,7 @@ function converteData($data_prev) {
 function getControle() {
 	require 'connect.php';	
 
-	// $datapagamento = date('d-m-Y');
+	$datapagamento = date('d/m/Y');
 
 	$sql_get2 = $pdo->prepare("SELECT id_conc, nome_pes FROM bolao251_loan.concessao, bolao251_loan.pessoa where pessoa = id_pes");
 	$sql_get2->execute();
@@ -108,7 +108,7 @@ function getControle() {
 
 		<div class="accordion accordion-sm" id="accordionExample">
 		<div class="card">
-		<div class="card-header py-1" id="headingOne">
+		<div class="card-header py-0" id="headingOne">
 		<h5 class="mb-0">
 		<button class="btn btn-link btc" type="button" data-toggle="collapse" data-target="#collapse'.$res2[$i]['id_conc'].'" aria-expanded="true" aria-controls="collapseOne">
 		<i class="fa fa-plus"></i>&nbsp;'.$res2[$i]['nome_pes'].'
@@ -162,7 +162,7 @@ function getControle() {
 			}else{
 				$op .= '<td class="sts"><span class="text-danger">'.$retval.'</span></td>';
 			}
-			$op .= '<td class="sts"><button class="btn btn-warning btn-sm" id="up" data-toggle="modal" data-target="#upcontrol" data-id="'.$res[$j]['id_ct'].'" data-valor="'.$res[$j]['valor_ct'].'" data-vencimento="'.$res[$j]['data_prev_ct'].'" data-status="'.$res[$j]['status_ct'].'"><i class="far fa-edit"></i></button></td>';
+			$op .= '<td class="sts"><button class="btn btn-warning btn-sm" id="up" data-toggle="modal" data-target="#upcontrol" data-id="'.$res[$j]['id_ct'].'" data-valor="'.$res[$j]['valor_ct'].'" data-vencimento="'.$res[$j]['data_prev_ct'].'" data-datapag="'.$datapagamento.'" data-status="'.$res[$j]['status_ct'].'"><i class="far fa-edit"></i></button></td>';
 		}
 		$op .='
 		</tbody>

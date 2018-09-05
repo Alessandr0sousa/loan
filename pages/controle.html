@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	validaCookie();
 	getControle();
-	dataAtual();
+	// dataAtual();
 	upControl();
 	checked();
 	setTimeout(function(){ 
@@ -9,6 +9,10 @@
 		$('.money').mask("#.##0,00", {reverse: true});
 		collapse();	
 	}, 3000);
+
+	$('#save').click(function() {
+		upControl_();
+	});
 </script>
 <div class="container jumbotron mt-2 py-3">
 	<div>
@@ -54,8 +58,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Sair</button>
-				<button type="button" class="btn btn-primary btn-sm">Salvar</button>
+				<button type="button" class="btn btn-primary btn-sm" id="save">Salvar</button>
 			</div>
 		</div>
 	</div>
 </div>
+<script src="js/mask.js"></script>

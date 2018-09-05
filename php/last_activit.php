@@ -4,14 +4,15 @@ require 'connect.php';
 
 extract($_POST);
 
-$sql_get = $pdo->prepare("select * from login l join session s on s.login = l.id_log join pessoa p on  p.id_pes = l.pessoa where s.id_ses = :id_ses");
+$retorno = array();
+
+$sql_get = $pdo->prepare("SELECT * from login l join session s on s.login = l.id_log join pessoa p on  p.id_pes = l.pessoa join user_image ui on ui.login = l.id_log where s.id_ses = :id_ses");
 $sql_get->execute(array('id_ses' => $cookie));
 
+$res = $sql_get->fetch(PDO::FETCH_ASSOC);
 
-
-
-$now = 1535815736;
-echo $now.'<br/>';
+$now = $res['last_activity'];
+// echo $now.'<br/>';
 
 $d_sem = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
 
@@ -21,7 +22,12 @@ $ds = $d_sem[date('w', $now)];
 
 $mm = $mes[date('n', $now)-1];
 
-$data = $ds.date(', d', $now).' de '.$mm.' de '.date('Y', $now);
+$hms = date('h:m:s', $now);
 
+$data = $ds.date(', d', $now).' de '.$mm.' de '.date('Y', $now).' '.$hms;
+
+$retorno = ['res' => $res, 'data' => $data];
+
+echo json_encode($retorno);
 
 ?>
