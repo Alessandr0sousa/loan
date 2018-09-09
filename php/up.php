@@ -19,9 +19,9 @@ function upControl_() {
 			'id_ct'			=> $id
 		));	
 
-		echo json_encode("Pagamento registrado com sucesso!");
+		echo json_encode("Registrado com sucesso!");
 	}else{
-		echo json_encode("Erro ao registrar pagamento!");
+		echo json_encode("Erro ao registrar!");
 	}
 }
 

@@ -35,10 +35,11 @@ function setCookie() {
 			type: 'success',
 			title: 'Login efetuado com sucesso!!'
 		})
-		// alert('Login efetuado com sucesso!!');
 		$.cookie('token', res);
-		var home = "home.html";
-		window.location.href = home;
+		setTimeout(function(){
+			var home = "home.html";
+			window.location.href = home;
+		},3000);
 	})
 	.fail(function(res) {
 		swal('Ocorreu algum erro, tente novamente!');

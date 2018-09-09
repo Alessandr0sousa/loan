@@ -394,7 +394,7 @@ function validaCookie(){
 	}
 }
 
-function ecerraSessao(argument) {
+function ecerraSessao() {
 	var horaatual = $.now();
 }
 
@@ -444,32 +444,31 @@ function upControl_() {
 		},
 	})
 	.done(function(res) {
-		alert(res);
-		// const toast = swal.mixin({
-		// 	toast: true,
-		// 	position: 'top-end',
-		// 	showConfirmButton: false,
-		// 	timer: 3000
-		// });
-
-		// toast({
-		// 	type: 'success',
-		// 	title: res
-		// })
+		const toast = swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		});
+		toast({
+			type: 'success',
+			title: res
+		})
+		location.reload();
 	})
 	.fail(function(res) {
-		alert(res);
-	// 	const toast = swal.mixin({
-	// 		toast: true,
-	// 		position: 'top-end',
-	// 		showConfirmButton: false,
-	// 		timer: 3000
-	// 	});
+		const toast = swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		});
 
-	// 	toast({
-	// 		type: 'danger',
-	// 		title: res
-	// 	})	
+		toast({
+			type: 'danger',
+			title: res
+		})
+
 	 })
 }
 
@@ -487,7 +486,6 @@ function checked() {
 }
 
 function logout(){
-
 	$('#logout').click(function() {
 		swal({
 			title: 'Voce deseja realmente sair?',
